@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <arpa/inet.h>
-
+#include "Config.h"
 struct Server
 {
 	int sockfd;
@@ -11,16 +11,16 @@ struct Server
 	int n;
 	int optval;
 	struct hostent *hostp;
-	char* hostaddrp;
+	char ip[INET_ADDRSTRLEN];
 
 };
 
-int setup_server_socket(int port);
-int send_dns_query(const char* upstream_ip, uint8_t *packet, int len);
-int receive_dns_response(int sockfd, uint8_t *buffer, int buflen);
-
-void server_loop();
+void server_loop(struct Server*, struct Config*);
 
 
-void fill_server(struct Server);
+void fill_server(struct Server*);
  
+void forward_answer(struct Server*, char*, int);
+
+void forward_request(struct Server*, char*, struct Config*);
+void receive_answer(struct Server*, char*, struct Config*);
