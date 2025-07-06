@@ -12,11 +12,17 @@ int main(int argc, char const *argv[])
 {
 	startup();
 
-	server_loop();
+	server_loop(&s, &c);
 
 	return 0;
 }
 
 int startup(){
-	read_config(c);
+	read_config(&c);
+	fill_server(&s);
+ 
+	int port = htons(s.serveraddr.sin_port);
+
+	printf("Server is bound to %s:%d\n", s.ip, port); 
+
 };
